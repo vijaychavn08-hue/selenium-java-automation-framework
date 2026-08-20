@@ -1,0 +1,1 @@
+*.class\n*.jar\n*.log\ntarget/\nallure-results/\nallure-report/\ntest-results/\nscreenshots/\n.idea/\n.vscode/\n*.iml\n.DS_Store\nbuild/\n.gradle/\nnode_modules/\n.env\n*.swp\n*.swo\n"
