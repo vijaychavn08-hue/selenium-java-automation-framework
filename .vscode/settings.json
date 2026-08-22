@@ -1,0 +1,13 @@
+{
+  "cucumber.features": [
+    "src/test/resources/features/**/*.feature"
+  ],
+  "cucumber.glue": [
+    "src/test/java/com/vijaychavan/steps/**/*.java"
+  ],
+  "cucumberautocomplete.steps": [
+    "src/test/java/com/vijaychavan/steps/*.java"
+  ],
+  "cucumberautocomplete.syncfeatures": "src/test/resources/features/*.feature",
+  "cucumberautocomplete.strictGherkinCompletion": true
+}
