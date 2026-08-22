@@ -1,11 +1,13 @@
 package com.vijaychavan.framework.base;
 
-import com.vijaychavan.framework.driver.DriverManager;
+import com.vijaychavan.framework.config.Config;
 import com.vijaychavan.framework.javascript.JavaScriptUtil;
 import com.vijaychavan.framework.utils.WaitUtil;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +18,7 @@ public abstract class BasePage {
     protected final WebDriver driver;
 
     public BasePage() {
-        this.driver = DriverManager.get();
+        this.driver = com.vijaychavan.framework.driver.DriverManager.get();
     }
 
     public BasePage(WebDriver driver) {
@@ -56,16 +58,7 @@ public abstract class BasePage {
         try {
             element.click();
         } catch (Exception e) {
-            log.info("Standard click on {} failed, attempting JS click.", locator);
-            JavaScriptUtil.clickWithJs(driver, element);
-        }
-    }
-
-    protected void click(WebElement element) {
-        WaitUtil.waitForClickable(driver, element);
-        try {
-            element.click();
-        } catch (Exception e) {
+            log.warn("Standard click failed for locator: {}. Retrying with JavaScript click.", locator);
             JavaScriptUtil.clickWithJs(driver, element);
         }
     }
@@ -80,7 +73,7 @@ public abstract class BasePage {
         WebElement element = WaitUtil.waitForVisibility(driver, locator);
         try {
             element.click();
-            element.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"), org.openqa.selenium.Keys.BACK_SPACE);
+            element.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
             if (value != null && !value.isEmpty()) {
                 element.sendKeys(value);
             }
@@ -91,14 +84,15 @@ public abstract class BasePage {
             }
         }
         if (value != null && !value.isEmpty()) {
-            String currentVal = element.getAttribute("value");
-            if (currentVal == null || !currentVal.equals(value)) {
+            try {
                 JavaScriptUtil.executeScript(driver,
-                        "arguments[0].value = arguments[1]; " +
-                        "arguments[0].dispatchEvent(new Event('input', { bubbles: true })); " +
-                        "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                        "var elem = arguments[0]; var val = arguments[1]; " +
+                        "var nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; " +
+                        "if (nativeSetter) { nativeSetter.call(elem, val); } else { elem.value = val; } " +
+                        "elem.dispatchEvent(new Event('input', { bubbles: true })); " +
+                        "elem.dispatchEvent(new Event('change', { bubbles: true }));",
                         element, value);
-            }
+            } catch (Exception ignored) {}
         }
     }
 
@@ -114,18 +108,6 @@ public abstract class BasePage {
         return txt != null ? txt.trim() : "";
     }
 
-    protected String text(WebElement element) {
-        WebElement el = WaitUtil.waitForVisibility(driver, element);
-        String txt = el.getText();
-        if (txt == null || txt.isEmpty()) {
-            txt = el.getAttribute("innerText");
-        }
-        if (txt == null || txt.isEmpty()) {
-            txt = el.getAttribute("textContent");
-        }
-        return txt != null ? txt.trim() : "";
-    }
-
     protected boolean isDisplayed(By locator) {
         try {
             return WaitUtil.waitForVisibility(driver, locator).isDisplayed();
@@ -134,13 +116,16 @@ public abstract class BasePage {
         }
     }
 
-    protected List<WebElement> findElements(By locator) {
-        return WaitUtil.waitForAllVisible(driver, locator);
+    protected boolean isElementPresent(By locator) {
+        try {
+            return !driver.findElements(locator).isEmpty();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    protected void scrollTo(By locator) {
-        WebElement element = WaitUtil.waitForPresence(driver, locator);
-        JavaScriptUtil.scrollToElement(driver, element);
+    protected List<WebElement> findElements(By locator) {
+        return WaitUtil.getWait(driver).until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
     }
 
     public abstract boolean isAt();
