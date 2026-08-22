@@ -44,10 +44,18 @@ public final class Config {
 
     public static String baseUrl() {
         String sys = System.getProperty("baseUrl");
-        if (sys != null && !sys.isBlank()) return sys.trim();
-        String env = System.getenv("BASE_URL");
-        if (env != null && !env.isBlank()) return env.trim();
-        return properties.getProperty("baseUrl", "https://www.saucedemo.com/");
+        String url;
+        if (sys != null && !sys.isBlank()) {
+            url = sys.trim();
+        } else {
+            String env = System.getenv("BASE_URL");
+            if (env != null && !env.isBlank()) {
+                url = env.trim();
+            } else {
+                url = properties.getProperty("baseUrl", "https://www.saucedemo.com/");
+            }
+        }
+        return url.endsWith("/") ? url : url + "/";
     }
 
     public static int explicitWaitSeconds() {

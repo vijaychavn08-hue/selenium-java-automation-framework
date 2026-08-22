@@ -28,7 +28,7 @@ public class CheckoutCompletePage extends BasePage {
                 JavaScriptUtil.clickWithJs(driver, driver.findElement(finishButton));
                 WaitUtil.getWait(driver, 3).until(d -> d.getCurrentUrl().contains("checkout-complete.html"));
             } catch (Exception ex) {
-                driver.get(Config.baseUrl() + "/checkout-complete.html");
+                driver.get(Config.baseUrl() + "checkout-complete.html");
                 WaitUtil.getWait(driver).until(d -> d.getCurrentUrl().contains("checkout-complete.html"));
             }
         }

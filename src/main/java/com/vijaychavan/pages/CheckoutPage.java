@@ -63,7 +63,7 @@ public class CheckoutPage extends BasePage {
                 JavaScriptUtil.clickWithJs(driver, driver.findElement(continueButton));
                 WaitUtil.getWait(driver, 3).until(d -> d.getCurrentUrl().contains("checkout-step-two.html"));
             } catch (Exception ex) {
-                driver.get(Config.baseUrl() + "/checkout-step-two.html");
+                driver.get(Config.baseUrl() + "checkout-step-two.html");
                 WaitUtil.getWait(driver).until(d -> d.getCurrentUrl().contains("checkout-step-two.html"));
             }
         }

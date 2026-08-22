@@ -125,7 +125,7 @@ public class CartPage extends BasePage {
                 JavaScriptUtil.clickWithJs(driver, driver.findElement(checkoutButton));
                 WaitUtil.getWait(driver, 3).until(d -> d.getCurrentUrl().contains("checkout-step-one.html"));
             } catch (Exception ex) {
-                driver.get(Config.baseUrl() + "/checkout-step-one.html");
+                driver.get(Config.baseUrl() + "checkout-step-one.html");
                 WaitUtil.getWait(driver).until(d -> d.getCurrentUrl().contains("checkout-step-one.html"));
             }
         }

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class InventoryPage extends BasePage {
     private final By title = By.cssSelector(".title");
-    private final By sortDropdown = By.cssSelector(".product_sort_container");
+    private final By sortDropdown = By.cssSelector(".product_sort_container, [data-test='product-sort-container']");
     private final By productCards = By.cssSelector(".inventory_item");
 
     private HeaderComponent header;
@@ -142,8 +142,15 @@ public class InventoryPage extends BasePage {
     public InventoryPage selectSortOption(String visibleText) {
         log.info("Selecting sort option: {}", visibleText);
         WebElement selectEl = WaitUtil.waitForVisibility(driver, sortDropdown);
-        Select select = new Select(selectEl);
-        select.selectByVisibleText(visibleText);
+        try {
+            Select select = new Select(selectEl);
+            select.selectByVisibleText(visibleText);
+        } catch (Exception e) {
+            JavaScriptUtil.executeScript(driver,
+                    "var sel = arguments[0]; " +
+                    "for(var i=0; i<sel.options.length; i++) { if(sel.options[i].text.includes(arguments[1])) { sel.selectedIndex = i; sel.dispatchEvent(new Event('change', { bubbles: true })); break; } }",
+                    selectEl, visibleText);
+        }
         return this;
     }
 
@@ -157,7 +164,7 @@ public class InventoryPage extends BasePage {
                 JavaScriptUtil.clickWithJs(driver, driver.findElement(By.cssSelector("a.shopping_cart_link, [data-test='shopping-cart-link']")));
                 WaitUtil.getWait(driver, 3).until(d -> d.getCurrentUrl().contains("cart.html"));
             } catch (Exception ex) {
-                driver.get(Config.baseUrl() + "/cart.html");
+                driver.get(Config.baseUrl() + "cart.html");
                 WaitUtil.getWait(driver).until(d -> d.getCurrentUrl().contains("cart.html"));
             }
         }
