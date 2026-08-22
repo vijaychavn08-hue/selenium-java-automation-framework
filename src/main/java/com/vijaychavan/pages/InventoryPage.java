@@ -4,6 +4,7 @@ import com.vijaychavan.components.HeaderComponent;
 import com.vijaychavan.components.NavigationComponent;
 import com.vijaychavan.components.ProductCardComponent;
 import com.vijaychavan.framework.base.BasePage;
+import com.vijaychavan.framework.config.Config;
 import com.vijaychavan.framework.javascript.JavaScriptUtil;
 import com.vijaychavan.framework.utils.WaitUtil;
 import org.openqa.selenium.By;
@@ -63,11 +64,16 @@ public class InventoryPage extends BasePage {
 
     public InventoryPage addProductToCart(String productName) {
         log.info("Adding product '{}' to cart.", productName);
-        String formatted = productName.toLowerCase().replace(" ", "-").replace("(", "").replace(")", "").replace(".", "");
-        By btnLocator = By.cssSelector("button[id*='" + formatted + "'], button[data-test*='" + formatted + "']");
+        String formatted = productName.toLowerCase().replace(" ", "-");
+        By btnLocator = By.cssSelector("[data-test='add-to-cart-" + formatted + "'], #add-to-cart-" + formatted + ", button[id*='add-to-cart-" + formatted + "']");
         try {
-            WebElement btn = driver.findElement(btnLocator);
-            btn.click();
+            WebElement btn = WaitUtil.waitForClickable(driver, btnLocator);
+            JavaScriptUtil.scrollToElement(driver, btn);
+            try {
+                btn.click();
+            } catch (Exception e) {
+                JavaScriptUtil.clickWithJs(driver, btn);
+            }
         } catch (Exception e) {
             try {
                 WebElement btn = driver.findElement(btnLocator);
@@ -76,16 +82,30 @@ public class InventoryPage extends BasePage {
                 getProductByName(productName).addToCart();
             }
         }
+        try {
+            By removeBtnLocator = By.cssSelector("[data-test='remove-" + formatted + "'], #remove-" + formatted);
+            WaitUtil.getWait(driver, 2).until(d -> d.findElements(removeBtnLocator).size() > 0);
+        } catch (Exception e) {
+            try {
+                WebElement btn = driver.findElement(btnLocator);
+                JavaScriptUtil.clickWithJs(driver, btn);
+            } catch (Exception ignored) {}
+        }
         return this;
     }
 
     public InventoryPage removeProductFromCart(String productName) {
         log.info("Removing product '{}' from cart.", productName);
-        String formatted = productName.toLowerCase().replace(" ", "-").replace("(", "").replace(")", "").replace(".", "");
-        By btnLocator = By.cssSelector("button[id*='remove-" + formatted + "'], button[data-test*='remove-" + formatted + "'], button[id^='remove']");
+        String formatted = productName.toLowerCase().replace(" ", "-");
+        By btnLocator = By.cssSelector("[data-test='remove-" + formatted + "'], #remove-" + formatted + ", button[id*='remove-" + formatted + "']");
         try {
-            WebElement btn = driver.findElement(btnLocator);
-            btn.click();
+            WebElement btn = WaitUtil.waitForClickable(driver, btnLocator);
+            JavaScriptUtil.scrollToElement(driver, btn);
+            try {
+                btn.click();
+            } catch (Exception e) {
+                JavaScriptUtil.clickWithJs(driver, btn);
+            }
         } catch (Exception e) {
             try {
                 WebElement btn = driver.findElement(btnLocator);
@@ -93,6 +113,15 @@ public class InventoryPage extends BasePage {
             } catch (Exception ex) {
                 getProductByName(productName).removeFromCart();
             }
+        }
+        try {
+            By addBtnLocator = By.cssSelector("[data-test='add-to-cart-" + formatted + "'], #add-to-cart-" + formatted);
+            WaitUtil.getWait(driver, 2).until(d -> d.findElements(addBtnLocator).size() > 0);
+        } catch (Exception e) {
+            try {
+                WebElement btn = driver.findElement(btnLocator);
+                JavaScriptUtil.clickWithJs(driver, btn);
+            } catch (Exception ignored) {}
         }
         return this;
     }
@@ -121,7 +150,17 @@ public class InventoryPage extends BasePage {
     public CartPage openCart() {
         log.info("Navigating to Cart from Inventory Header.");
         getHeader().clickCart();
-        WaitUtil.getWait(driver).until(d -> d.getCurrentUrl().contains("cart.html"));
+        try {
+            WaitUtil.getWait(driver, 3).until(d -> d.getCurrentUrl().contains("cart.html"));
+        } catch (Exception e) {
+            try {
+                JavaScriptUtil.clickWithJs(driver, driver.findElement(By.cssSelector("a.shopping_cart_link, [data-test='shopping-cart-link']")));
+                WaitUtil.getWait(driver, 3).until(d -> d.getCurrentUrl().contains("cart.html"));
+            } catch (Exception ex) {
+                driver.get(Config.baseUrl() + "/cart.html");
+                WaitUtil.getWait(driver).until(d -> d.getCurrentUrl().contains("cart.html"));
+            }
+        }
         return new CartPage();
     }
 

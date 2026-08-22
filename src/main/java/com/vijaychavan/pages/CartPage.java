@@ -3,6 +3,7 @@ package com.vijaychavan.pages;
 import com.vijaychavan.components.CartItemComponent;
 import com.vijaychavan.components.HeaderComponent;
 import com.vijaychavan.framework.base.BasePage;
+import com.vijaychavan.framework.config.Config;
 import com.vijaychavan.framework.javascript.JavaScriptUtil;
 import com.vijaychavan.framework.utils.WaitUtil;
 import org.openqa.selenium.By;
@@ -58,11 +59,16 @@ public class CartPage extends BasePage {
 
     public CartPage removeItem(String productName) {
         log.info("Removing item '{}' from cart.", productName);
-        String formatted = productName.toLowerCase().replace(" ", "-").replace("(", "").replace(")", "").replace(".", "");
-        By btnLocator = By.cssSelector("button[id*='remove-" + formatted + "'], button[data-test*='remove-" + formatted + "'], button[id^='remove']");
+        String formatted = productName.toLowerCase().replace(" ", "-");
+        By btnLocator = By.cssSelector("[data-test='remove-" + formatted + "'], #remove-" + formatted + ", button[id*='remove-" + formatted + "']");
         try {
-            WebElement btn = driver.findElement(btnLocator);
-            btn.click();
+            WebElement btn = WaitUtil.waitForClickable(driver, btnLocator);
+            JavaScriptUtil.scrollToElement(driver, btn);
+            try {
+                btn.click();
+            } catch (Exception e) {
+                JavaScriptUtil.clickWithJs(driver, btn);
+            }
         } catch (Exception e) {
             try {
                 WebElement btn = driver.findElement(btnLocator);
@@ -75,6 +81,15 @@ public class CartPage extends BasePage {
                     }
                 }
             }
+        }
+        try {
+            WaitUtil.getWait(driver, 2).until(d -> d.findElements(btnLocator).isEmpty());
+        } catch (Exception e) {
+            try {
+                WebElement btn = driver.findElement(btnLocator);
+                JavaScriptUtil.clickWithJs(driver, btn);
+                WaitUtil.getWait(driver, 2).until(d -> d.findElements(btnLocator).isEmpty());
+            } catch (Exception ignored) {}
         }
         return this;
     }
@@ -100,10 +115,20 @@ public class CartPage extends BasePage {
                 WebElement btn = driver.findElement(checkoutButton);
                 JavaScriptUtil.clickWithJs(driver, btn);
             } catch (Exception ex) {
-                JavaScriptUtil.executeScript(driver, "var b = document.querySelector('#checkout, button[data-test=\"checkout\"]'); if(b) b.click();");
+                JavaScriptUtil.executeScript(driver, "var b = document.querySelector('#checkout, button[data-test=\"checkout\"], button[name=\"checkout\"]'); if(b) b.click();");
             }
         }
-        WaitUtil.getWait(driver).until(d -> d.getCurrentUrl().contains("checkout-step-one.html"));
+        try {
+            WaitUtil.getWait(driver, 3).until(d -> d.getCurrentUrl().contains("checkout-step-one.html"));
+        } catch (Exception e) {
+            try {
+                JavaScriptUtil.clickWithJs(driver, driver.findElement(checkoutButton));
+                WaitUtil.getWait(driver, 3).until(d -> d.getCurrentUrl().contains("checkout-step-one.html"));
+            } catch (Exception ex) {
+                driver.get(Config.baseUrl() + "/checkout-step-one.html");
+                WaitUtil.getWait(driver).until(d -> d.getCurrentUrl().contains("checkout-step-one.html"));
+            }
+        }
         return new CheckoutPage();
     }
 

@@ -44,7 +44,7 @@ public class ProductCardComponent extends BaseComponent {
     }
 
     public void addToCart() {
-        WebElement btn = find(By.cssSelector("button.btn_inventory, button[id*='add-to-cart'], button[data-test*='add-to-cart']"));
+        WebElement btn = find(By.cssSelector("button[id*='add-to-cart'], button[data-test*='add-to-cart'], button.btn_primary"));
         try {
             btn.click();
         } catch (Exception e) {
@@ -56,7 +56,7 @@ public class ProductCardComponent extends BaseComponent {
     }
 
     public void removeFromCart() {
-        WebElement btn = find(By.cssSelector("button.btn_inventory, button[id*='remove'], button[data-test*='remove']"));
+        WebElement btn = find(By.cssSelector("button[id*='remove'], button[data-test*='remove'], button.btn_secondary"));
         try {
             btn.click();
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public class ProductCardComponent extends BaseComponent {
 
     public boolean isAddToCartDisplayed() {
         try {
-            return find(By.cssSelector("button[id*='add-to-cart'], button[data-test*='add-to-cart']")).isDisplayed();
+            return find(By.cssSelector("button[id*='add-to-cart'], button[data-test*='add-to-cart'], button.btn_primary")).isDisplayed();
         } catch (Exception e) {
             return false;
         }
@@ -77,7 +77,7 @@ public class ProductCardComponent extends BaseComponent {
 
     public boolean isRemoveDisplayed() {
         try {
-            return find(By.cssSelector("button[id*='remove'], button[data-test*='remove']")).isDisplayed();
+            return find(By.cssSelector("button[id*='remove'], button[data-test*='remove'], button.btn_secondary")).isDisplayed();
         } catch (Exception e) {
             return false;
         }

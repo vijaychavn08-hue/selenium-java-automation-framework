@@ -68,8 +68,28 @@ public abstract class BasePage {
     protected void type(By locator, String value) {
         log.info("Typing text into element: {}", locator);
         WebElement element = WaitUtil.waitForVisibility(driver, locator);
-        element.clear();
-        element.sendKeys(value);
+        try {
+            element.click();
+            element.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"), org.openqa.selenium.Keys.BACK_SPACE);
+            if (value != null && !value.isEmpty()) {
+                element.sendKeys(value);
+            }
+        } catch (Exception e) {
+            element.clear();
+            if (value != null && !value.isEmpty()) {
+                element.sendKeys(value);
+            }
+        }
+        if (value != null && !value.isEmpty()) {
+            String currentVal = element.getAttribute("value");
+            if (currentVal == null || !currentVal.equals(value)) {
+                JavaScriptUtil.executeScript(driver,
+                        "arguments[0].value = arguments[1]; " +
+                        "arguments[0].dispatchEvent(new Event('input', { bubbles: true })); " +
+                        "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                        element, value);
+            }
+        }
     }
 
     protected String text(By locator) {

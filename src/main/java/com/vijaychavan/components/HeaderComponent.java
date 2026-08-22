@@ -6,6 +6,7 @@ import com.vijaychavan.framework.utils.WaitUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
 
@@ -38,6 +39,12 @@ public class HeaderComponent extends BaseComponent {
             if (txt.isEmpty()) {
                 txt = badges.get(0).getAttribute("innerText").trim();
             }
+            if (txt.isEmpty()) {
+                txt = badges.get(0).getAttribute("textContent").trim();
+            }
+            if (txt.isEmpty()) {
+                return 0;
+            }
             return Integer.parseInt(txt);
         } catch (Exception e) {
             return 0;
@@ -47,28 +54,27 @@ public class HeaderComponent extends BaseComponent {
     public void clickCart() {
         try {
             WebElement link = driver.findElement(cartLink);
-            link.click();
-        } catch (Exception e) {
+            JavaScriptUtil.scrollToElement(driver, link);
             try {
-                WebElement link = driver.findElement(cartLink);
-                JavaScriptUtil.clickWithJs(driver, link);
-            } catch (Exception ex) {
-                JavaScriptUtil.executeScript(driver, "var link = document.querySelector('a.shopping_cart_link, .shopping_cart_link'); if(link) link.click();");
+                new Actions(driver).moveToElement(link).click().perform();
+            } catch (Exception e) {
+                link.click();
             }
+        } catch (Exception ex) {
+            JavaScriptUtil.clickWithJs(driver, driver.findElement(cartLink));
         }
     }
 
     public void clickMenu() {
         try {
             WebElement menu = driver.findElement(menuButton);
-            menu.click();
-        } catch (Exception e) {
             try {
-                WebElement menu = driver.findElement(menuButton);
+                menu.click();
+            } catch (Exception e) {
                 JavaScriptUtil.clickWithJs(driver, menu);
-            } catch (Exception ex) {
-                JavaScriptUtil.executeScript(driver, "var m = document.querySelector('#react-burger-menu-btn'); if(m) m.click();");
             }
+        } catch (Exception ex) {
+            JavaScriptUtil.executeScript(driver, "var m = document.querySelector('#react-burger-menu-btn'); if(m) m.click();");
         }
     }
 }

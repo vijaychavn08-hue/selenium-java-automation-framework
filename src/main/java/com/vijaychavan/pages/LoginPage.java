@@ -32,6 +32,9 @@ public class LoginPage extends BasePage {
         type(passwordInput, password);
         click(loginButton);
         WaitUtil.getWait(driver).until(d -> d.getCurrentUrl().contains("inventory.html"));
+        try {
+            WaitUtil.waitForVisibility(driver, By.cssSelector(".inventory_list, .inventory_item"));
+        } catch (Exception ignored) {}
         return new InventoryPage();
     }
 
