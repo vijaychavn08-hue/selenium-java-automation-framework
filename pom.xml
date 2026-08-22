@@ -1,1 +1,134 @@
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0\n                             http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n    <modelVersion>4.0.0</modelVersion>\n\n    <groupId>com.vijay</groupId>\n    <artifactId>selenium-java-automation-framework</artifactId>\n    <version>1.0.0</version>\n    <packaging>jar</packaging>\n    \n    <name>Selenium Java Automation Framework</name>\n    <description>Enterprise Selenium WebDriver automation framework</description>\n    <url>https://github.com/vijaychavn08-hue/selenium-java-automation-framework</url>\n\n    <properties>\n        <maven.compiler.source>11</maven.compiler.source>\n        <maven.compiler.target>11</maven.compiler.target>\n        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\n        <selenium.version>4.15.0</selenium.version>\n        <testng.version>7.8.1</testng.version>\n        <cucumber.version>7.14.0</cucumber.version>\n        <allure.version>2.21.0</allure.version>\n    </properties>\n\n    <dependencies>\n        <dependency>\n            <groupId>org.seleniumhq.selenium</groupId>\n            <artifactId>selenium-java</artifactId>\n            <version>${selenium.version}</version>\n        </dependency>\n        <dependency>\n            <groupId>org.testng</groupId>\n            <artifactId>testng</artifactId>\n            <version>${testng.version}</version>\n            <scope>test</scope>\n        </dependency>\n        <dependency>\n            <groupId>io.cucumber</groupId>\n            <artifactId>cucumber-java</artifactId>\n            <version>${cucumber.version}</version>\n        </dependency>\n        <dependency>\n            <groupId>io.cucumber</groupId>\n            <artifactId>cucumber-testng</artifactId>\n            <version>${cucumber.version}</version>\n        </dependency>\n        <dependency>\n            <groupId>io.qameta.allure</groupId>\n            <artifactId>allure-testng</artifactId>\n            <version>${allure.version}</version>\n        </dependency>\n        <dependency>\n            <groupId>com.fasterxml.jackson.core</groupId>\n            <artifactId>jackson-databind</artifactId>\n            <version>2.16.0</version>\n        </dependency>\n        <dependency>\n            <groupId>org.slf4j</groupId>\n            <artifactId>slf4j-api</artifactId>\n            <version>2.0.9</version>\n        </dependency>\n        <dependency>\n            <groupId>ch.qos.logback</groupId>\n            <artifactId>logback-classic</artifactId>\n            <version>1.4.11</version>\n        </dependency>\n        <dependency>\n            <groupId>com.github.javafaker</groupId>\n            <artifactId>javafaker</artifactId>\n            <version>1.0.2</version>\n        </dependency>\n        <dependency>\n            <groupId>io.github.bonigarcia</groupId>\n            <artifactId>webdrivermanager</artifactId>\n            <version>5.6.2</version>\n        </dependency>\n    </dependencies>\n\n    <build>\n        <plugins>\n            <plugin>\n                <groupId>org.apache.maven.plugins</groupId>\n                <artifactId>maven-compiler-plugin</artifactId>\n                <version>3.11.0</version>\n                <configuration>\n                    <source>11</source>\n                    <target>11</target>\n                </configuration>\n            </plugin>\n            <plugin>\n                <groupId>org.apache.maven.plugins</groupId>\n                <artifactId>maven-surefire-plugin</artifactId>\n                <version>3.0.0-M9</version>\n                <configuration>\n                    <suiteXmlFiles>\n                        <suiteXmlFile>testng.xml</suiteXmlFile>\n                    </suiteXmlFiles>\n                </configuration>\n            </plugin>\n            <plugin>\n                <groupId>io.qameta.allure</groupId>\n                <artifactId>allure-maven</artifactId>\n                <version>2.13.0</version>\n            </plugin>\n        </plugins>\n    </build>\n</project>\n"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.vijaychavan</groupId>
+  <artifactId>selenium-java-automation-framework</artifactId>
+  <version>1.0.0</version>
+  <name>Advanced Selenium Java Automation Framework</name>
+  <description>Portfolio-grade Selenium WebDriver automation framework using Java 17, TestNG, Cucumber BDD, Allure, and Jackson</description>
+
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <selenium.version>4.25.0</selenium.version>
+    <testng.version>7.10.2</testng.version>
+    <cucumber.version>7.18.1</cucumber.version>
+    <allure.version>2.29.0</allure.version>
+    <jackson.version>2.18.1</jackson.version>
+    <slf4j.version>1.7.36</slf4j.version>
+    <commons-io.version>2.16.1</commons-io.version>
+  </properties>
+
+  <dependencies>
+    <!-- Selenium WebDriver -->
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+
+    <!-- TestNG -->
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>${testng.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Cucumber BDD -->
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-testng</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Allure Reporting -->
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-java-commons</artifactId>
+      <version>${allure.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-testng</artifactId>
+      <version>${allure.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-cucumber7-jvm</artifactId>
+      <version>${allure.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Jackson JSON Handling -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <!-- Commons IO -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons-io.version}</version>
+    </dependency>
+
+    <!-- SLF4J Logging Implementation -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <release>17</release>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>testng.xml</suiteXmlFile>
+          </suiteXmlFiles>
+          <systemPropertyVariables>
+            <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>io.qameta.allure</groupId>
+        <artifactId>allure-maven</artifactId>
+        <version>2.15.0</version>
+      </plugin>
+    </plugins>
+  </build>
+</project>

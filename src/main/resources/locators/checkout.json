@@ -1,0 +1,26 @@
+{
+  "firstName": {
+    "type": "id",
+    "value": "first-name"
+  },
+  "lastName": {
+    "type": "id",
+    "value": "last-name"
+  },
+  "postalCode": {
+    "type": "id",
+    "value": "postal-code"
+  },
+  "continueButton": {
+    "type": "id",
+    "value": "continue"
+  },
+  "finishButton": {
+    "type": "id",
+    "value": "finish"
+  },
+  "completeHeader": {
+    "type": "css",
+    "value": ".complete-header"
+  }
+}

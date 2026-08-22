@@ -1,0 +1,14 @@
+{
+  "title": {
+    "type": "css",
+    "value": ".title"
+  },
+  "checkoutButton": {
+    "type": "id",
+    "value": "checkout"
+  },
+  "continueShopping": {
+    "type": "id",
+    "value": "continue-shopping"
+  }
+}

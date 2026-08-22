@@ -1,1 +1,17 @@
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE suite SYSTEM \"http://testng.org/testng-current.dtd\">\n<suite name=\"Selenium Automation Suite\" parallel=\"methods\" thread-count=\"4\">\n    <parameter name=\"browser\" value=\"chrome\"/>\n    <parameter name=\"baseUrl\" value=\"https://www.saucedemo.com\"/>\n    \n    <test name=\"Smoke Tests\" parallel=\"methods\" thread-count=\"4\">\n        <groups>\n            <run>\n                <include name=\"smoke\"/>\n            </run>\n        </groups>\n        <packages>\n            <package name=\"com.vijay.automation.steps.*\"/>\n        </packages>\n    </test>\n</suite>\n"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Selenium Automation Suite" verbose="1">
+    <test name="Selenium Functional Tests">
+        <classes>
+            <class name="com.vijaychavan.tests.LoginTest"/>
+            <class name="com.vijaychavan.tests.ProductCatalogTest"/>
+            <class name="com.vijaychavan.tests.CartCheckoutTest"/>
+            <class name="com.vijaychavan.tests.JavaScriptDiscoveryTest"/>
+        </classes>
+    </test>
+    <test name="Cucumber BDD Tests">
+        <classes>
+            <class name="com.vijaychavan.framework.runner.CucumberTestRunner"/>
+        </classes>
+    </test>
+</suite>

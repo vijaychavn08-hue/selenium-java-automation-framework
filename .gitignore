@@ -1,1 +1,31 @@
-*.class\n*.jar\n*.log\ntarget/\nallure-results/\nallure-report/\ntest-results/\nscreenshots/\n.idea/\n.vscode/\n*.iml\n.DS_Store\nbuild/\n.gradle/\nnode_modules/\n.env\n*.swp\n*.swo\n"
+# Maven build output
+target/
+*.class
+
+# Allure reports and results
+allure-results/
+allure-report/
+.allure/
+
+# Screenshots
+screenshots/
+target/screenshots/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Logs and environment
+logs/
+*.log
+.env

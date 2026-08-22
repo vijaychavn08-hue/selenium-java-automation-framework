@@ -1,0 +1,25 @@
+{
+  "validCustomer": {
+    "firstName": "Vijay",
+    "lastName": "Chavan",
+    "postalCode": "411001"
+  },
+  "emptyFirstName": {
+    "firstName": "",
+    "lastName": "Chavan",
+    "postalCode": "411001",
+    "expectedError": "Error: First Name is required"
+  },
+  "emptyLastName": {
+    "firstName": "Vijay",
+    "lastName": "",
+    "postalCode": "411001",
+    "expectedError": "Error: Last Name is required"
+  },
+  "emptyPostalCode": {
+    "firstName": "Vijay",
+    "lastName": "Chavan",
+    "postalCode": "",
+    "expectedError": "Error: Postal Code is required"
+  }
+}

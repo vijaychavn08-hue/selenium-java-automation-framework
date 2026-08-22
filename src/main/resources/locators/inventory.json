@@ -1,0 +1,18 @@
+{
+  "title": {
+    "type": "css",
+    "value": ".title"
+  },
+  "sortDropdown": {
+    "type": "css",
+    "value": ".product_sort_container"
+  },
+  "cartBadge": {
+    "type": "css",
+    "value": ".shopping_cart_badge"
+  },
+  "cartLink": {
+    "type": "css",
+    "value": ".shopping_cart_link"
+  }
+}
