@@ -1,6 +1,7 @@
 package com.vijaychavan.framework.driver;
 
 import com.vijaychavan.framework.config.Config;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -34,6 +35,7 @@ public final class DriverManager {
             }
             options.addArguments("--width=1920");
             options.addArguments("--height=1080");
+            options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
             driver = new FirefoxDriver(options);
         } else {
             ChromeOptions options = new ChromeOptions();
@@ -45,6 +47,11 @@ public final class DriverManager {
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
             options.addArguments("--remote-allow-origins=*");
+            options.addArguments("--disable-blink-features=AutomationControlled");
+            options.addArguments("--disable-extensions");
+            options.addArguments("--disable-infobars");
+            options.addArguments("--disable-notifications");
+            options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
             driver = new ChromeDriver(options);
         }
 
