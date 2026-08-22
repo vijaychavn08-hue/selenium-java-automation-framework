@@ -29,7 +29,17 @@ public abstract class BasePage {
 
     public void openUrl(String url) {
         log.info("Navigating to URL: {}", url);
-        driver.get(url);
+        try {
+            driver.get(url);
+        } catch (Exception e) {
+            log.warn("Direct navigation error: {}. Retrying via JavaScript navigation...", e.getMessage());
+            try {
+                JavaScriptUtil.executeScript(driver, "window.location.href = arguments[0];", url);
+                WaitUtil.getWait(driver).until(d -> !d.getCurrentUrl().isBlank());
+            } catch (Exception ex) {
+                driver.get(url);
+            }
+        }
     }
 
     public String getCurrentUrl() {

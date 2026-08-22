@@ -1,6 +1,7 @@
 package com.vijaychavan.framework.driver;
 
 import com.vijaychavan.framework.config.Config;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -46,6 +47,8 @@ public final class DriverManager {
             options.addArguments("--disable-gpu");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-software-rasterizer");
+            options.addArguments("--dns-prefetch-disable");
             options.addArguments("--remote-allow-origins=*");
             options.addArguments("--disable-blink-features=AutomationControlled");
             options.addArguments("--disable-extensions");
@@ -55,7 +58,12 @@ public final class DriverManager {
             driver = new ChromeDriver(options);
         }
 
+        try {
+            driver.manage().window().setSize(new Dimension(1920, 1080));
+        } catch (Exception ignored) {}
+
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(Config.pageLoadTimeoutSeconds()));
+        driver.manage().timeouts().implicitlyWait(Duration.ZERO);
         driver.manage().deleteAllCookies();
         DRIVER.set(driver);
         log.info("WebDriver successfully initialized and stored in ThreadLocal.");
